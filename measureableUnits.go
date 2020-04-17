@@ -15,8 +15,8 @@ const (
 )
 
 type BitternessRangeType struct {
-	Maximum BitternessType `json:"maximum", validate:"required"`
 	Minimum BitternessType `json:"minimum", validate:"required"`
+	Maximum BitternessType `json:"maximum", validate:"required"`
 }
 
 type BitternessType struct {
@@ -47,14 +47,14 @@ const (
 )
 
 type ColorRangeType struct {
-	Minimum ColorType `json:"minimum", validate:"required"`
 	Maximum ColorType `json:"maximum", validate:"required"`
+	Minimum ColorType `json:"minimum", validate:"required"`
 }
 
 // ColorType supports both grain color properties, such as Lovibond, and wort color properties such as SRM and EBC.
 type ColorType struct {
-	Unit  ColorUnitType `json:"unit", validate:"required"`
 	Value float64       `json:"value", validate:"required"`
+	Unit  ColorUnitType `json:"unit", validate:"required"`
 }
 
 type ColorUnitType string
@@ -67,8 +67,8 @@ const (
 
 // Examples for concentration include ppm, ppb, and mg/l.
 type ConcentrationType struct {
-	Unit  ConcentrationUnitType `json:"unit", validate:"required"`
 	Value float64               `json:"value", validate:"required"`
+	Unit  ConcentrationUnitType `json:"unit", validate:"required"`
 }
 
 type ConcentrationUnitType string
@@ -90,8 +90,8 @@ const (
 
 // Diastatic power is a measurement of malted grains enzymatic content. A value of 35 Lintner is needed to self convert, while a value of 100 or more is desirable for base malts.
 type DiastaticPowerType struct {
-	Value float64                `json:"value", validate:"required"`
 	Unit  DiastaticPowerUnitType `json:"unit", validate:"required"`
+	Value float64                `json:"value", validate:"required"`
 }
 
 type DiastaticPowerUnitType string
@@ -125,19 +125,19 @@ type MassType struct {
 	Value float64      `json:"value", validate:"required"`
 }
 
+func (s *MassType) FermentableAdditionTypeamount() {}
+
+func (s *MassType) FermentableInventoryTypeamount() {}
+
+func (s *MassType) HopInventoryTypeamount() {}
+
+func (s *MassType) HopAdditionTypeamount() {}
+
 func (s *MassType) CultureAdditionTypeamount() {}
 
 func (s *MassType) MiscellaneousAdditionTypeamount() {}
 
 func (s *MassType) MiscellaneousInventoryTypeamount() {}
-
-func (s *MassType) HopAdditionTypeamount() {}
-
-func (s *MassType) HopInventoryTypeamount() {}
-
-func (s *MassType) FermentableAdditionTypeamount() {}
-
-func (s *MassType) FermentableInventoryTypeamount() {}
 
 type MassUnitType string
 
@@ -166,8 +166,8 @@ const (
 )
 
 type PressureType struct {
-	Unit  PressureUnitType `json:"unit", validate:"required"`
 	Value float64          `json:"value", validate:"required"`
+	Unit  PressureUnitType `json:"unit", validate:"required"`
 }
 
 type PressureUnitType string
@@ -229,8 +229,8 @@ type TemperatureRangeType struct {
 }
 
 type TemperatureType struct {
-	Unit  TemperatureUnitType `json:"unit", validate:"required"`
 	Value float64             `json:"value", validate:"required"`
+	Unit  TemperatureUnitType `json:"unit", validate:"required"`
 }
 
 type TemperatureUnitType string
@@ -285,19 +285,19 @@ type VolumeType struct {
 	Value float64        `json:"value", validate:"required"`
 }
 
+func (s *VolumeType) FermentableAdditionTypeamount() {}
+
+func (s *VolumeType) FermentableInventoryTypeamount() {}
+
+func (s *VolumeType) HopInventoryTypeamount() {}
+
+func (s *VolumeType) HopAdditionTypeamount() {}
+
 func (s *VolumeType) CultureAdditionTypeamount() {}
 
 func (s *VolumeType) MiscellaneousAdditionTypeamount() {}
 
 func (s *VolumeType) MiscellaneousInventoryTypeamount() {}
-
-func (s *VolumeType) HopAdditionTypeamount() {}
-
-func (s *VolumeType) HopInventoryTypeamount() {}
-
-func (s *VolumeType) FermentableAdditionTypeamount() {}
-
-func (s *VolumeType) FermentableInventoryTypeamount() {}
 
 type VolumeUnitType string
 

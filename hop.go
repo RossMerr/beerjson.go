@@ -7,10 +7,17 @@ import "encoding/json"
 
 // HopAdditionType collects the attributes of each hop ingredient for use in a recipe hop bil.
 type HopAdditionType struct {
-	HopVarietyBase *HopVarietyBase `json:"HopVarietyBase,omitempty"`
+	BetaAcid           *PercentType        `json:"beta_acid,omitempty"`
+	Producer           *string             `json:"producer,omitempty"`
+	Origin             *string             `json:"origin,omitempty"`
+	Year               *string             `json:"year,omitempty"`
+	HopVarietyBaseForm *HopVarietyBaseForm `json:"form,omitempty"`
 	// The timing object fully describes the timing of an addition with options for basis on time, gravity, or pH at any process step.
-	Timing TimingType            `json:"timing", validate:"required"`
-	Amount HopAdditionTypeAmount `json:"amount", validate:"required,oneof"`
+	Timing    TimingType            `json:"timing", validate:"required"`
+	Name      *string               `json:"name,omitempty"`
+	ProductId *string               `json:"product_id,omitempty"`
+	AlphaAcid *PercentType          `json:"alpha_acid,omitempty"`
+	Amount    HopAdditionTypeAmount `json:"amount", validate:"required,oneof"`
 }
 
 func (s *HopAdditionType) UnmarshalJSON(b []byte) error {
@@ -44,6 +51,10 @@ func (s *HopAdditionType) UnmarshalJSON(b []byte) error {
 	}{
 		Amount: hopAdditionTypeAmount(),
 		Alias:  (*Alias)(s),
+	}
+
+	if err := json.Unmarshal(b, &aux); err != nil {
+		return err
 	}
 
 	s.Amount = aux.Amount
@@ -92,6 +103,10 @@ func (s *HopInventoryType) UnmarshalJSON(b []byte) error {
 		Alias:  (*Alias)(s),
 	}
 
+	if err := json.Unmarshal(b, &aux); err != nil {
+		return err
+	}
+
 	s.Amount = aux.Amount
 
 	return nil
@@ -104,6 +119,7 @@ type HopInventoryTypeAmount interface {
 
 // HopVarietyBase provides unique properties to identify individual records of a hop variety.
 type HopVarietyBase struct {
+	Year               *string             `json:"year,omitempty"`
 	HopVarietyBaseForm *HopVarietyBaseForm `json:"form,omitempty"`
 	AlphaAcid          PercentType         `json:"alpha_acid", validate:"required"`
 	BetaAcid           *PercentType        `json:"beta_acid,omitempty"`
@@ -111,7 +127,6 @@ type HopVarietyBase struct {
 	Producer           *string             `json:"producer,omitempty"`
 	ProductId          *string             `json:"product_id,omitempty"`
 	Origin             *string             `json:"origin,omitempty"`
-	Year               *string             `json:"year,omitempty"`
 }
 
 type HopVarietyBaseForm string
@@ -141,34 +156,41 @@ const (
 
 // oil_content collects all information of a hop variety pertaining to oil content, polyphenols, and thiols. Each individual compound is expressed as a percent of the total oil measurement.
 type OilContentType struct {
-	Limonene      *PercentType `json:"limonene,omitempty"`
-	Nerol         *PercentType `json:"nerol,omitempty"`
-	Xanthohumol   *PercentType `json:"xanthohumol,omitempty"`
-	Geraniol      *PercentType `json:"geraniol,omitempty"`
-	Pinene        *PercentType `json:"pinene,omitempty"`
-	Myrcene       *PercentType `json:"myrcene,omitempty"`
-	Farnesene     *PercentType `json:"farnesene,omitempty"`
-	Polyphenols   *PercentType `json:"polyphenols,omitempty"`
-	Caryophyllene *PercentType `json:"caryophyllene,omitempty"`
-	Cohumulone    *PercentType `json:"cohumulone,omitempty"`
-	BPinene       *PercentType `json:"b_pinene,omitempty"`
-	Linalool      *PercentType `json:"linalool,omitempty"`
+	Polyphenols *PercentType `json:"polyphenols,omitempty"`
 	// The total amount of oil, including hydrocarbons, esters, and terpene alcohols in units of ml of oil per 100g of hop mass.
 	TotalOilMlPer100g *float64     `json:"total_oil_ml_per_100g,omitempty"`
+	Farnesene         *PercentType `json:"farnesene,omitempty"`
+	Limonene          *PercentType `json:"limonene,omitempty"`
+	Nerol             *PercentType `json:"nerol,omitempty"`
+	Geraniol          *PercentType `json:"geraniol,omitempty"`
+	BPinene           *PercentType `json:"b_pinene,omitempty"`
+	Linalool          *PercentType `json:"linalool,omitempty"`
+	Caryophyllene     *PercentType `json:"caryophyllene,omitempty"`
+	Cohumulone        *PercentType `json:"cohumulone,omitempty"`
+	Xanthohumol       *PercentType `json:"xanthohumol,omitempty"`
 	Humulene          *PercentType `json:"humulene,omitempty"`
+	Myrcene           *PercentType `json:"myrcene,omitempty"`
+	Pinene            *PercentType `json:"pinene,omitempty"`
 }
 
 // VarietyInformation collects the attributes of a hop variety to store as record information.
 type VarietyInformation struct {
-	HopVarietyBase *HopVarietyBase `json:"HopVarietyBase,omitempty"`
-	//  Defined as the percentage of hop alpha lost in 6 months of storage.
-	PercentLost *PercentType `json:"percent_lost,omitempty"`
-	Substitutes *string      `json:"substitutes,omitempty"`
-	// Oil Content information object.
-	OilContent             *OilContentType         `json:"oil_content,omitempty"`
 	Inventory              *HopInventoryType       `json:"inventory,omitempty"`
 	VarietyInformationType *VarietyInformationType `json:"type,omitempty"`
-	Notes                  *string                 `json:"notes,omitempty"`
+	// Oil Content information object.
+	OilContent *OilContentType `json:"oil_content,omitempty"`
+	//  Defined as the percentage of hop alpha lost in 6 months of storage.
+	PercentLost        *PercentType        `json:"percent_lost,omitempty"`
+	ProductId          *string             `json:"product_id,omitempty"`
+	AlphaAcid          *PercentType        `json:"alpha_acid,omitempty"`
+	BetaAcid           *PercentType        `json:"beta_acid,omitempty"`
+	Name               *string             `json:"name,omitempty"`
+	Origin             *string             `json:"origin,omitempty"`
+	Substitutes        *string             `json:"substitutes,omitempty"`
+	Year               *string             `json:"year,omitempty"`
+	HopVarietyBaseForm *HopVarietyBaseForm `json:"form,omitempty"`
+	Producer           *string             `json:"producer,omitempty"`
+	Notes              *string             `json:"notes,omitempty"`
 }
 
 type VarietyInformationType string

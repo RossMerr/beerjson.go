@@ -5,31 +5,57 @@ package beerjson
 
 // WaterAdditionType collects the attributes of each water addition for use in a recipe
 type WaterAdditionType struct {
-	WaterBase *WaterBase  `json:"WaterBase,omitempty"`
-	Amount    *VolumeType `json:"amount,omitempty"`
+	Flouride    *ConcentrationType `json:"flouride,omitempty"`
+	Sulfate     *ConcentrationType `json:"sulfate,omitempty"`
+	Producer    *string            `json:"producer,omitempty"`
+	Nitrate     *ConcentrationType `json:"nitrate,omitempty"`
+	Nitrite     *ConcentrationType `json:"nitrite,omitempty"`
+	Chloride    *ConcentrationType `json:"chloride,omitempty"`
+	Amount      *VolumeType        `json:"amount,omitempty"`
+	Name        *string            `json:"name,omitempty"`
+	Potassium   *ConcentrationType `json:"potassium,omitempty"`
+	Magnesium   *ConcentrationType `json:"magnesium,omitempty"`
+	Iron        *ConcentrationType `json:"iron,omitempty"`
+	Bicarbonate *ConcentrationType `json:"bicarbonate,omitempty"`
+	Calcium     *ConcentrationType `json:"calcium,omitempty"`
+	Carbonate   *ConcentrationType `json:"carbonate,omitempty"`
+	Sodium      *ConcentrationType `json:"sodium,omitempty"`
 }
 
 // WaterBase provides unique properties to identify individual records of  brewing water.
 type WaterBase struct {
 	Calcium     ConcentrationType  `json:"calcium", validate:"required"`
-	Carbonate   *ConcentrationType `json:"carbonate,omitempty"`
+	Nitrite     *ConcentrationType `json:"nitrite,omitempty"`
 	Chloride    ConcentrationType  `json:"chloride", validate:"required"`
-	Sodium      ConcentrationType  `json:"sodium", validate:"required"`
-	Magnesium   ConcentrationType  `json:"magnesium", validate:"required"`
 	Name        string             `json:"name", validate:"required"`
-	Producer    *string            `json:"producer,omitempty"`
-	Sulfate     ConcentrationType  `json:"sulfate", validate:"required"`
+	Potassium   *ConcentrationType `json:"potassium,omitempty"`
+	Carbonate   *ConcentrationType `json:"carbonate,omitempty"`
 	Iron        *ConcentrationType `json:"iron,omitempty"`
 	Flouride    *ConcentrationType `json:"flouride,omitempty"`
+	Sulfate     ConcentrationType  `json:"sulfate", validate:"required"`
+	Magnesium   ConcentrationType  `json:"magnesium", validate:"required"`
+	Producer    *string            `json:"producer,omitempty"`
 	Bicarbonate ConcentrationType  `json:"bicarbonate", validate:"required"`
 	Nitrate     *ConcentrationType `json:"nitrate,omitempty"`
-	Potassium   *ConcentrationType `json:"potassium,omitempty"`
-	Nitrite     *ConcentrationType `json:"nitrite,omitempty"`
+	Sodium      ConcentrationType  `json:"sodium", validate:"required"`
 }
 
 // WaterType collects the attributes of a brewing water to store as record information
 type WaterType struct {
-	Notes     *string    `json:"notes,omitempty"`
-	WaterBase *WaterBase `json:"WaterBase,omitempty"`
-	PH        *float64   `json:"pH,omitempty"`
+	Calcium     *ConcentrationType `json:"calcium,omitempty"`
+	Nitrite     *ConcentrationType `json:"nitrite,omitempty"`
+	Chloride    *ConcentrationType `json:"chloride,omitempty"`
+	Iron        *ConcentrationType `json:"iron,omitempty"`
+	Sulfate     *ConcentrationType `json:"sulfate,omitempty"`
+	Magnesium   *ConcentrationType `json:"magnesium,omitempty"`
+	Bicarbonate *ConcentrationType `json:"bicarbonate,omitempty"`
+	Flouride    *ConcentrationType `json:"flouride,omitempty"`
+	Nitrate     *ConcentrationType `json:"nitrate,omitempty"`
+	PH          *float64           `json:"pH,omitempty"`
+	Name        *string            `json:"name,omitempty"`
+	Potassium   *ConcentrationType `json:"potassium,omitempty"`
+	Carbonate   *ConcentrationType `json:"carbonate,omitempty"`
+	Producer    *string            `json:"producer,omitempty"`
+	Sodium      *ConcentrationType `json:"sodium,omitempty"`
+	Notes       *string            `json:"notes,omitempty"`
 }

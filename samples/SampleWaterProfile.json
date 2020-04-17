@@ -27,8 +27,7 @@
         "magnesium": {
             "unit": "ppm",
             "value": 45.0
-          },
-        "pH": 8.0
+          }
       }
     ]
   }

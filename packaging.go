@@ -5,9 +5,9 @@ package beerjson
 
 // Describes the procedure for packaging your beverage.
 type PackagingProcedureType struct {
-	Notes            *string               `json:"notes,omitempty"`
-	PackagingVessels []PackagingVesselType `json:"packaging_vessels,omitempty"`
 	Name             string                `json:"name", validate:"required"`
 	PackagedVolume   *VolumeType           `json:"packaged_volume,omitempty"`
 	Description      *string               `json:"description,omitempty"`
+	Notes            *string               `json:"notes,omitempty"`
+	PackagingVessels []PackagingVesselType `json:"packaging_vessels,omitempty"`
 }

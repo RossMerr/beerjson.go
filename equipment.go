@@ -5,10 +5,10 @@ package beerjson
 
 // The descriptive base type for brew day equipment. Provides unique properties to fully describe the recipe.
 type EquipmentBase struct {
-	Name              string            `json:"name", validate:"required"`
 	KeyType           *string           `json:"type,omitempty"`
 	EquipmentBaseForm EquipmentBaseForm `json:"form", validate:"required"`
 	MaximumVolume     VolumeType        `json:"maximum_volume", validate:"required"`
+	Name              string            `json:"name", validate:"required"`
 }
 
 type EquipmentBaseForm string
@@ -25,23 +25,26 @@ const (
 
 // EquipmentType provides necessary information for individual brewing equipment.
 type EquipmentItemType struct {
-	Notes *string    `json:"notes,omitempty"`
-	Loss  VolumeType `json:"loss", validate:"required"`
-	// The apparent volume absorbed by grain, typical values are 0.125 qt/lb (1.04 L/kg) for a mashtun, 0.08 gal/lb (0.66 L/kg) for BIAB.
-	GrainAbsorptionRate *SpecificVolumeType `json:"grain_absorption_rate,omitempty"`
-	EquipmentBase       *EquipmentBase      `json:"EquipmentBase,omitempty"`
+	Notes *string `json:"notes,omitempty"`
 	// The volume boiled off during 1 hour, measured before and after at room temperature.
-	BoilRatePerHour *VolumeType `json:"boil_rate_per_hour,omitempty"`
+	BoilRatePerHour   *VolumeType        `json:"boil_rate_per_hour,omitempty"`
+	KeyType           *string            `json:"type,omitempty"`
+	EquipmentBaseForm *EquipmentBaseForm `json:"form,omitempty"`
 	// The volume that leaves the kettle, especially important for non-immersion chillers that cool the wort as it leaves the kettle.
 	DrainRatePerMinute *VolumeType `json:"drain_rate_per_minute,omitempty"`
-	// The weight of the piece of equipment, especially important for when the mashtun is not preheated.
-	Weight *MassType `json:"weight,omitempty"`
 	// The specific heat of the piece of equipment, expressed in Cal/(g*C), especially important for when the mashtun is not preheated.
 	SpecificHeat *SpecificHeatType `json:"specific_heat,omitempty"`
+	// The apparent volume absorbed by grain, typical values are 0.125 qt/lb (1.04 L/kg) for a mashtun, 0.08 gal/lb (0.66 L/kg) for BIAB.
+	GrainAbsorptionRate *SpecificVolumeType `json:"grain_absorption_rate,omitempty"`
+	Name                *string             `json:"name,omitempty"`
+	MaximumVolume       *VolumeType         `json:"maximum_volume,omitempty"`
+	// The weight of the piece of equipment, especially important for when the mashtun is not preheated.
+	Weight *MassType  `json:"weight,omitempty"`
+	Loss   VolumeType `json:"loss", validate:"required"`
 }
 
 // Provides necessary information for brewing equipment set.
 type EquipmentType struct {
-	EquipmentItems []EquipmentItemType `json:"equipment_items", validate:"required"`
 	Name           string              `json:"name", validate:"required"`
+	EquipmentItems []EquipmentItemType `json:"equipment_items", validate:"required"`
 }

@@ -7,19 +7,19 @@ package beerjson
 type MashStepType struct {
 	StepTime TimeType `json:"step_time", validate:"required"`
 	// The amount of time  that passes before this step begins. eg moving from a mash step (step 1) of 148F, to a new temperature step of 156F (step 2) may take 8 minutes to heat the mash. Step 2 would have a ramp time of 8 minutes.
-	RampTime         *TimeType        `json:"ramp_time,omitempty"`
-	EndTemperature   *TemperatureType `json:"end_temperature,omitempty"`
-	StartPH          *AcidityType     `json:"start_pH,omitempty"`
-	Name             string           `json:"name", validate:"required"`
-	MashStepTypeType MashStepTypeType `json:"type", validate:"required"`
-	Description      *string          `json:"description,omitempty"`
-	// Also known as the mash thickness. eg 1.75 qt/lb or 3.65 L/kg.
-	WaterGrainRatio *SpecificVolumeType `json:"water_grain_ratio,omitempty"`
+	RampTime       *TimeType        `json:"ramp_time,omitempty"`
+	EndTemperature *TemperatureType `json:"end_temperature,omitempty"`
+	Description    *string          `json:"description,omitempty"`
 	// Temperature of the water for an infusion step.
 	InfuseTemperature *TemperatureType `json:"infuse_temperature,omitempty"`
+	StartPH           *AcidityType     `json:"start_pH,omitempty"`
 	EndPH             *AcidityType     `json:"end_pH,omitempty"`
+	Name              string           `json:"name", validate:"required"`
+	MashStepTypeType  MashStepTypeType `json:"type", validate:"required"`
 	Amount            *VolumeType      `json:"amount,omitempty"`
 	StepTemperature   TemperatureType  `json:"step_temperature", validate:"required"`
+	// Also known as the mash thickness. eg 1.75 qt/lb or 3.65 L/kg.
+	WaterGrainRatio *SpecificVolumeType `json:"water_grain_ratio,omitempty"`
 }
 
 type MashStepTypeType string

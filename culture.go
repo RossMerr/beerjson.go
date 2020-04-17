@@ -7,14 +7,18 @@ import "encoding/json"
 
 // CultureAdditionType collects the attributes of each culture ingredient for use in a recipe.
 type CultureAdditionType struct {
-	CultureBase *CultureBase `json:"CultureBase,omitempty"`
-	// The expected, or measured apparent attenuation for a given culture in a given recipe. In comparison to attenuation range, this is a single value.
-	Attenuation   *PercentType `json:"attenuation,omitempty"`
-	TimesCultured *int32       `json:"times_cultured,omitempty"`
-	// The timing object fully describes the timing of an addition with options for basis on time, gravity, or pH at any process step.
-	Timing            *TimingType               `json:"timing,omitempty"`
+	CultureBaseForm   *CultureBaseForm          `json:"form,omitempty"`
+	ProductId         *string                   `json:"product_id,omitempty"`
+	Name              *string                   `json:"name,omitempty"`
 	CellCountBillions *int32                    `json:"cell_count_billions,omitempty"`
 	Amount            CultureAdditionTypeAmount `json:"amount,omitempty", validate:"oneof"`
+	TimesCultured     *int32                    `json:"times_cultured,omitempty"`
+	Producer          *string                   `json:"producer,omitempty"`
+	CultureBaseType   *CultureBaseType          `json:"type,omitempty"`
+	// The expected, or measured apparent attenuation for a given culture in a given recipe. In comparison to attenuation range, this is a single value.
+	Attenuation *PercentType `json:"attenuation,omitempty"`
+	// The timing object fully describes the timing of an addition with options for basis on time, gravity, or pH at any process step.
+	Timing *TimingType `json:"timing,omitempty"`
 }
 
 func (s *CultureAdditionType) UnmarshalJSON(b []byte) error {
@@ -55,6 +59,10 @@ func (s *CultureAdditionType) UnmarshalJSON(b []byte) error {
 		Alias:  (*Alias)(s),
 	}
 
+	if err := json.Unmarshal(b, &aux); err != nil {
+		return err
+	}
+
 	s.Amount = aux.Amount
 
 	return nil
@@ -67,11 +75,11 @@ type CultureAdditionTypeAmount interface {
 
 // Provides unique properties to identify individual records of a culture.
 type CultureBase struct {
-	Name            string          `json:"name", validate:"required"`
-	CultureBaseType CultureBaseType `json:"type", validate:"required"`
 	CultureBaseForm CultureBaseForm `json:"form", validate:"required"`
 	Producer        *string         `json:"producer,omitempty"`
 	ProductId       *string         `json:"product_id,omitempty"`
+	Name            string          `json:"name", validate:"required"`
+	CultureBaseType CultureBaseType `json:"type", validate:"required"`
 }
 
 type CultureBaseForm string
@@ -104,25 +112,29 @@ const (
 
 // CultureInformation collects the attributes of a microbial culture.
 type CultureInformation struct {
-	Notes *string `json:"notes,omitempty"`
-	// A glucoamylase positive culture is capable of producing glucoamylase, the enzyme produced through expression of the diastatic gene, which allows yeast to attenuate dextrins and starches leading to a very low FG. This is positive in some saison/brett yeasts as well as the new gulo hybrid by Omega yeast labs.
-	Glucoamylase *bool                 `json:"glucoamylase,omitempty"`
-	Inventory    *CultureInventoryType `json:"inventory,omitempty"`
-	Zymocide     *Zymocide             `json:"zymocide,omitempty"`
-	// Maximum number of times to reuse a culture before a new lab source is recommended.
-	MaxReuse *int32 `json:"max_reuse,omitempty"`
+	CultureBaseForm *CultureBaseForm `json:"form,omitempty"`
+	Producer        *string          `json:"producer,omitempty"`
+	// The recommended temperature range of fermentation by the culture producer.
+	TemperatureRange *TemperatureRangeType `json:"temperature_range,omitempty"`
+	Notes            *string               `json:"notes,omitempty"`
 	// Recommended styles for a particular culture.
-	BestFor *string `json:"best_for,omitempty"`
+	BestFor   *string               `json:"best_for,omitempty"`
+	Inventory *CultureInventoryType `json:"inventory,omitempty"`
+	ProductId *string               `json:"product_id,omitempty"`
+	Name      *string               `json:"name,omitempty"`
+	// The recommended limit of abv by the culture producer before attenuation stops.
+	AlcoholTolerance *PercentType `json:"alcohol_tolerance,omitempty"`
+	// A glucoamylase positive culture is capable of producing glucoamylase, the enzyme produced through expression of the diastatic gene, which allows yeast to attenuate dextrins and starches leading to a very low FG. This is positive in some saison/brett yeasts as well as the new gulo hybrid by Omega yeast labs.
+	Glucoamylase    *bool            `json:"glucoamylase,omitempty"`
+	CultureBaseType *CultureBaseType `json:"type,omitempty"`
 	// Floculation refers to the ability of yeast to aggregate to form large flocs which drop out of suspension.
 	Flocculation     *QualitativeRangeType `json:"flocculation,omitempty"`
 	AttenuationRange *PercentRangeType     `json:"attenuation_range,omitempty"`
-	// The recommended temperature range of fermentation by the culture producer.
-	TemperatureRange *TemperatureRangeType `json:"temperature_range,omitempty"`
-	// The recommended limit of abv by the culture producer before attenuation stops.
-	AlcoholTolerance *PercentType `json:"alcohol_tolerance,omitempty"`
-	CultureBase      *CultureBase `json:"CultureBase,omitempty"`
+	// Maximum number of times to reuse a culture before a new lab source is recommended.
+	MaxReuse *int32 `json:"max_reuse,omitempty"`
 	// A POF+ culture is capable of producing phenols, which is a common distinctive property of saison, and brett yeasts.
-	Pof *bool `json:"pof,omitempty"`
+	Pof      *bool     `json:"pof,omitempty"`
+	Zymocide *Zymocide `json:"zymocide,omitempty"`
 }
 
 type CultureInventoryType struct {

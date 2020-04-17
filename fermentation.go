@@ -5,8 +5,8 @@ package beerjson
 
 // FermentationProcedureType defines the procedure for performing fermentation.
 type FermentationProcedureType struct {
-	FermentationSteps []FermentationStepType `json:"fermentation_steps", validate:"required"`
-	Name              string                 `json:"name", validate:"required"`
 	Description       *string                `json:"description,omitempty"`
 	Notes             *string                `json:"notes,omitempty"`
+	FermentationSteps []FermentationStepType `json:"fermentation_steps", validate:"required"`
+	Name              string                 `json:"name", validate:"required"`
 }

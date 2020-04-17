@@ -5,10 +5,10 @@ package beerjson
 
 // BoilProcedureType defines the procedure for performing a boil. A boil procedure with no steps is the same as a standard single step boil.
 type BoilProcedureType struct {
+	PreBoilSize *VolumeType    `json:"pre_boil_size,omitempty"`
 	BoilTime    TimeType       `json:"boil_time", validate:"required"`
 	BoilSteps   []BoilStepType `json:"boil_steps,omitempty"`
 	Name        *string        `json:"name,omitempty"`
 	Description *string        `json:"description,omitempty"`
 	Notes       *string        `json:"notes,omitempty"`
-	PreBoilSize *VolumeType    `json:"pre_boil_size,omitempty"`
 }

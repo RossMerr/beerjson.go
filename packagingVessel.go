@@ -5,20 +5,20 @@ package beerjson
 
 // PackagingVesselType - a per vessel representation of a packaging process.
 type PackagingVesselType struct {
+	PackagingVesselTypeType *PackagingVesselTypeType `json:"type,omitempty"`
+	StartGravity            *GravityType             `json:"start_gravity,omitempty"`
+	Name                    string                   `json:"name", validate:"required"`
+	PackageDate             *DateType                `json:"package_date,omitempty"`
+	StepTime                *TimeType                `json:"step_time,omitempty"`
+	EndGravity              *GravityType             `json:"end_gravity,omitempty"`
+	VesselVolume            *VolumeType              `json:"vessel_volume,omitempty"`
+	VesselQuantity          *float64                 `json:"vessel_quantity,omitempty"`
+	Description             *string                  `json:"description,omitempty"`
+	StartPh                 *AcidityType             `json:"start_ph,omitempty"`
+	Carbonation             *float64                 `json:"carbonation,omitempty"`
 	StartTemperature        *TemperatureType         `json:"start_temperature,omitempty"`
 	EndPh                   *AcidityType             `json:"end_ph,omitempty"`
-	VesselVolume            *VolumeType              `json:"vessel_volume,omitempty"`
-	PackagingVesselTypeType *PackagingVesselTypeType `json:"type,omitempty"`
-	Description             *string                  `json:"description,omitempty"`
-	EndGravity              *GravityType             `json:"end_gravity,omitempty"`
-	Name                    string                   `json:"name", validate:"required"`
-	StepTime                *TimeType                `json:"step_time,omitempty"`
-	StartPh                 *AcidityType             `json:"start_ph,omitempty"`
-	VesselQuantity          *float64                 `json:"vessel_quantity,omitempty"`
-	PackageDate             *DateType                `json:"package_date,omitempty"`
 	EndTemperature          *TemperatureType         `json:"end_temperature,omitempty"`
-	StartGravity            *GravityType             `json:"start_gravity,omitempty"`
-	Carbonation             *float64                 `json:"carbonation,omitempty"`
 }
 
 type PackagingVesselTypeType string

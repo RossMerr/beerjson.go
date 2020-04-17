@@ -7,10 +7,13 @@ import "encoding/json"
 
 // MiscellaneousAdditionType collects the attributes of each miscellaneous ingredient for use in a recipe.
 type MiscellaneousAdditionType struct {
-	MiscellaneousBase *MiscellaneousBase `json:"MiscellaneousBase,omitempty"`
+	Name     *string `json:"name,omitempty"`
+	Producer *string `json:"producer,omitempty"`
 	// The timing object fully describes the timing of an addition with options for basis on time, gravity, or pH at any process step.
-	Timing *TimingType                     `json:"timing,omitempty"`
-	Amount MiscellaneousAdditionTypeAmount `json:"amount,omitempty", validate:"oneof"`
+	Timing                *TimingType                     `json:"timing,omitempty"`
+	Amount                MiscellaneousAdditionTypeAmount `json:"amount,omitempty", validate:"oneof"`
+	ProductId             *string                         `json:"product_id,omitempty"`
+	MiscellaneousBaseType *MiscellaneousBaseType          `json:"type,omitempty"`
 }
 
 func (s *MiscellaneousAdditionType) UnmarshalJSON(b []byte) error {
@@ -51,6 +54,10 @@ func (s *MiscellaneousAdditionType) UnmarshalJSON(b []byte) error {
 		Alias:  (*Alias)(s),
 	}
 
+	if err := json.Unmarshal(b, &aux); err != nil {
+		return err
+	}
+
 	s.Amount = aux.Amount
 
 	return nil
@@ -63,10 +70,10 @@ type MiscellaneousAdditionTypeAmount interface {
 
 // MiscellaneousBase provides unique properties to identify individual records of ingredients that are neither hops, nor provide a contribution to the gravity of wort.
 type MiscellaneousBase struct {
-	MiscellaneousBaseType MiscellaneousBaseType `json:"type", validate:"required"`
 	Name                  string                `json:"name", validate:"required"`
 	Producer              *string               `json:"producer,omitempty"`
 	ProductId             *string               `json:"product_id,omitempty"`
+	MiscellaneousBaseType MiscellaneousBaseType `json:"type", validate:"required"`
 }
 
 type MiscellaneousBaseType string
@@ -123,6 +130,10 @@ func (s *MiscellaneousInventoryType) UnmarshalJSON(b []byte) error {
 		Alias:  (*Alias)(s),
 	}
 
+	if err := json.Unmarshal(b, &aux); err != nil {
+		return err
+	}
+
 	s.Amount = aux.Amount
 
 	return nil
@@ -135,9 +146,12 @@ type MiscellaneousInventoryTypeAmount interface {
 
 // MiscellaneousType collects the attributes of an ingredient to store as record information.
 type MiscellaneousType struct {
-	MiscellaneousBase *MiscellaneousBase `json:"MiscellaneousBase,omitempty"`
 	// Used to describe the purpose of the miscellaneous ingredient, e.g. whirlfloc is used for clarity.
-	UseFor    *string                     `json:"use_for,omitempty"`
-	Notes     *string                     `json:"notes,omitempty"`
-	Inventory *MiscellaneousInventoryType `json:"inventory,omitempty"`
+	UseFor                *string                     `json:"use_for,omitempty"`
+	Notes                 *string                     `json:"notes,omitempty"`
+	Name                  *string                     `json:"name,omitempty"`
+	Producer              *string                     `json:"producer,omitempty"`
+	ProductId             *string                     `json:"product_id,omitempty"`
+	MiscellaneousBaseType *MiscellaneousBaseType      `json:"type,omitempty"`
+	Inventory             *MiscellaneousInventoryType `json:"inventory,omitempty"`
 }

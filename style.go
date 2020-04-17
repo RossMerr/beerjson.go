@@ -5,17 +5,22 @@ package beerjson
 
 // RecipeStyleType defines style information stored in a recipe record
 type RecipeStyleType struct {
-	StyleBase *StyleBase `json:"StyleBase,omitempty"`
+	KeyType        *StyleCategories `json:"type,omitempty"`
+	Name           *string          `json:"name,omitempty"`
+	Category       *string          `json:"category,omitempty"`
+	CategoryNumber *int32           `json:"category_number,omitempty"`
+	StyleLetter    *string          `json:"style_letter,omitempty", validate:"max=1,min=1,regex=[A-Z ]"`
+	StyleGuide     *string          `json:"style_guide,omitempty"`
 }
 
 // The descriptive base type for both style guideline records, and recipe style provisions. Provides unique properties to identify individual styles
 type StyleBase struct {
-	Name           string          `json:"name", validate:"required"`
-	Category       string          `json:"category", validate:"required"`
-	CategoryNumber *int32          `json:"category_number,omitempty"`
 	StyleLetter    *string         `json:"style_letter,omitempty", validate:"max=1,min=1,regex=[A-Z ]"`
 	StyleGuide     string          `json:"style_guide", validate:"required"`
 	KeyType        StyleCategories `json:"type", validate:"required"`
+	Name           string          `json:"name", validate:"required"`
+	Category       string          `json:"category", validate:"required"`
+	CategoryNumber *int32          `json:"category_number,omitempty"`
 }
 
 type StyleCategories string
@@ -33,18 +38,23 @@ const (
 // StyleType provide information for Style categorization
 type StyleType struct {
 	Aroma                        *string               `json:"aroma,omitempty"`
-	Flavor                       *string               `json:"flavor,omitempty"`
-	OverallImpression            *string               `json:"overall_impression,omitempty"`
-	Examples                     *string               `json:"examples,omitempty"`
-	OriginalGravity              *GravityRangeType     `json:"original_gravity,omitempty"`
-	Carbonation                  *CarbonationRangeType `json:"carbonation,omitempty"`
-	FinalGravity                 *GravityRangeType     `json:"final_gravity,omitempty"`
-	Color                        *ColorRangeType       `json:"color,omitempty"`
-	InternationalBitternessUnits *BitternessRangeType  `json:"international_bitterness_units,omitempty"`
 	Ingredients                  *string               `json:"ingredients,omitempty"`
-	AlcoholByVolume              *PercentRangeType     `json:"alcohol_by_volume,omitempty"`
+	CategoryNumber               *int32                `json:"category_number,omitempty"`
 	Notes                        *string               `json:"notes,omitempty"`
-	StyleBase                    *StyleBase            `json:"StyleBase,omitempty"`
-	Appearance                   *string               `json:"appearance,omitempty"`
+	Flavor                       *string               `json:"flavor,omitempty"`
 	Mouthfeel                    *string               `json:"mouthfeel,omitempty"`
+	FinalGravity                 *GravityRangeType     `json:"final_gravity,omitempty"`
+	StyleGuide                   *string               `json:"style_guide,omitempty"`
+	Color                        *ColorRangeType       `json:"color,omitempty"`
+	OriginalGravity              *GravityRangeType     `json:"original_gravity,omitempty"`
+	Examples                     *string               `json:"examples,omitempty"`
+	Name                         *string               `json:"name,omitempty"`
+	Carbonation                  *CarbonationRangeType `json:"carbonation,omitempty"`
+	AlcoholByVolume              *PercentRangeType     `json:"alcohol_by_volume,omitempty"`
+	InternationalBitternessUnits *BitternessRangeType  `json:"international_bitterness_units,omitempty"`
+	Appearance                   *string               `json:"appearance,omitempty"`
+	Category                     *string               `json:"category,omitempty"`
+	StyleLetter                  *string               `json:"style_letter,omitempty", validate:"max=1,min=1,regex=[A-Z ]"`
+	KeyType                      *StyleCategories      `json:"type,omitempty"`
+	OverallImpression            *string               `json:"overall_impression,omitempty"`
 }

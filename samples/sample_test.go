@@ -24,6 +24,78 @@ func TestSchemas_Generate(t *testing.T) {
 			name: "Boil Whirlpool Chill",
 			json: "boil_whirlpool_chill.json",
 		},
+		{
+			name: "BrettDosedKegsSaison",
+			json: "BrettDosedKegsSaison.json",
+		},
+		{
+			name: "CheaterHops",
+			json: "CheaterHops.json",
+		},
+		{
+			name: "CorianderSpice",
+			json: "CorianderSpice.json",
+		},
+		{
+			name: "CrystalMaltSpecialtyGrain",
+			json: "CrystalMaltSpecialtyGrain.json",
+		},
+		{
+			name: "EquipmentSet",
+			json: "EquipmentSet.json",
+		},
+		{
+			name: "FermentableRecord",
+			json: "FermentableRecord.json",
+		},
+		{
+			name: "HoppedExtract",
+			json: "HoppedExtract.json",
+		},
+		{
+			name: "HopRecordWithAllFields",
+			json: "HopRecordWithAllFields.json",
+		},
+		{
+			name: "HopWithRequiredFieldsOnly",
+			json: "HopWithRequiredFieldsOnly.json",
+		},
+		{
+			name: "IrishMoss",
+			json: "IrishMoss.json",
+		},
+		{
+			name: "MashSingleStepInfusion",
+			json: "MashSingleStepInfusion.json",
+		},
+		{
+			name: "MashTwoStepTemperature",
+			json: "MashTwoStepTemperature.json",
+		},
+		{
+			name: "MedievalAle",
+			json: "MedievalAle.json",
+		},
+		{
+			name: "SampleWaterProfile",
+			json: "SampleWaterProfile.json",
+		},
+		{
+			name: "StyleBohemianPilsner",
+			json: "StyleBohemianPilsner.json",
+		},
+		{
+			name: "StyleDryIrishStoutWithAllFields",
+			json: "StyleDryIrishStoutWithAllFields.json",
+		},
+		{
+			name: "YeastWithMorePopularFields",
+			json: "YeastWithMorePopularFields.json",
+		},
+		{
+			name: "YeastWithRequiredFieldsOnly",
+			json: "YeastWithRequiredFieldsOnly.json",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -78,7 +150,7 @@ func ShouldEqualJSONObject(data1, data2 []byte) error {
 		if err != nil {
 			return fmt.Errorf("marshal of data2 failed: %w", err)
 		}
-		return fmt.Errorf("object not equal \n%v \n%v", string(jx), string(jy))
+		return fmt.Errorf("object not equal \nexpected \n%v \ngot \n%v", string(jx), string(jy))
 	}
 
 	return nil

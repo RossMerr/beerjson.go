@@ -7,8 +7,15 @@ import "encoding/json"
 
 // FermentableAdditionType collects the attributes of each fermentable ingredient for use in a recipe fermentable bill.
 type FermentableAdditionType struct {
-	FermentableBase *FermentableBase              `json:"FermentableBase,omitempty"`
-	Amount          FermentableAdditionTypeAmount `json:"amount", validate:"required,oneof"`
+	FermentableBaseType       *FermentableBaseType          `json:"type,omitempty"`
+	Origin                    *string                       `json:"origin,omitempty"`
+	FermentableBaseGrainGroup *FermentableBaseGrainGroup    `json:"grain_group,omitempty"`
+	Amount                    FermentableAdditionTypeAmount `json:"amount", validate:"oneof,required"`
+	Yield                     *YieldType                    `json:"yield,omitempty"`
+	Color                     *ColorType                    `json:"color,omitempty"`
+	Name                      *string                       `json:"name,omitempty"`
+	Producer                  *string                       `json:"producer,omitempty"`
+	ProductId                 *string                       `json:"product_id,omitempty"`
 	// The timing object fully describes the timing of an addition with options for basis on time, gravity, or pH at any process step.
 	Timing *TimingType `json:"timing,omitempty"`
 }
@@ -39,11 +46,15 @@ func (s *FermentableAdditionType) UnmarshalJSON(b []byte) error {
 	}
 	type Alias FermentableAdditionType
 	aux := &struct {
-		Amount FermentableAdditionTypeAmount `json:"amount", validate:"required,oneof"`
+		Amount FermentableAdditionTypeAmount `json:"amount", validate:"oneof,required"`
 		*Alias
 	}{
 		Amount: fermentableAdditionTypeAmount(),
 		Alias:  (*Alias)(s),
+	}
+
+	if err := json.Unmarshal(b, &aux); err != nil {
+		return err
 	}
 
 	s.Amount = aux.Amount
@@ -58,6 +69,7 @@ type FermentableAdditionTypeAmount interface {
 
 // FermentableBase provides unique properties to identify individual records of fermentable ingredients.
 type FermentableBase struct {
+	ProductId                 *string                    `json:"product_id,omitempty"`
 	FermentableBaseGrainGroup *FermentableBaseGrainGroup `json:"grain_group,omitempty"`
 	Yield                     YieldType                  `json:"yield", validate:"required"`
 	Color                     ColorType                  `json:"color", validate:"required"`
@@ -65,7 +77,6 @@ type FermentableBase struct {
 	FermentableBaseType       FermentableBaseType        `json:"type", validate:"required"`
 	Origin                    *string                    `json:"origin,omitempty"`
 	Producer                  *string                    `json:"producer,omitempty"`
-	ProductId                 *string                    `json:"product_id,omitempty"`
 }
 
 type FermentableBaseGrainGroup string
@@ -130,6 +141,10 @@ func (s *FermentableInventoryType) UnmarshalJSON(b []byte) error {
 		Alias:  (*Alias)(s),
 	}
 
+	if err := json.Unmarshal(b, &aux); err != nil {
+		return err
+	}
+
 	s.Amount = aux.Amount
 
 	return nil
@@ -142,32 +157,39 @@ type FermentableInventoryTypeAmount interface {
 
 // FermentableType collects the attributes of a fermentable ingredient to store as record information.
 type FermentableType struct {
-	// True if the fermentable must be mashed, false if it can be steeped.
-	RecommendMash *bool `json:"recommend_mash,omitempty"`
-	// Diastatic power is a measurement of malted grains enzymatic content. A value of 35 Lintner is needed to self convert, while a value of 100 or more is desirable.
-	DiastaticPower  *DiastaticPowerType       `json:"diastatic_power,omitempty"`
-	Inventory       *FermentableInventoryType `json:"inventory,omitempty"`
-	FermentableBase *FermentableBase          `json:"FermentableBase,omitempty"`
-	Notes           *string                   `json:"notes,omitempty"`
-	Moisture        *PercentType              `json:"moisture,omitempty"`
-	// The Kolbach Index, also known as soluble to total ratio of nitrogen or protein, is used to indcate the degree of malt modification. A value above 35% is desired for simple single infusion mashing, undermodified malt may require multiple step mashes or decoction.
-	KolbachIndex *float64 `json:"kolbach_index,omitempty"`
-	// Where diastatic power gives the total amount of all enzymes, alpha amylase, also known as dextrinizing units, refers to only the total amount of alpa amylase in the malted grain. A value of 25-50 is desirable for base malt.
-	AlphaAmylase *float64 `json:"alpha_amylase,omitempty"`
-	// The percentage of protein. Higher values may indicate a possibility of haze, or lautering issues.
-	Protein *PercentType `json:"protein,omitempty"`
 	// The recommended maximum percentage to use in a grain bill.
 	MaxInBatch *PercentType `json:"max_in_batch,omitempty"`
+	// True if the fermentable must be mashed, false if it can be steeped.
+	RecommendMash *bool `json:"recommend_mash,omitempty"`
+	// The percentage of protein. Higher values may indicate a possibility of haze, or lautering issues.
+	Protein                   *PercentType               `json:"protein,omitempty"`
+	ProductId                 *string                    `json:"product_id,omitempty"`
+	FermentableBaseGrainGroup *FermentableBaseGrainGroup `json:"grain_group,omitempty"`
+	Yield                     *YieldType                 `json:"yield,omitempty"`
+	FermentableBaseType       *FermentableBaseType       `json:"type,omitempty"`
+	Producer                  *string                    `json:"producer,omitempty"`
+	// Where diastatic power gives the total amount of all enzymes, alpha amylase, also known as dextrinizing units, refers to only the total amount of alpa amylase in the malted grain. A value of 25-50 is desirable for base malt.
+	AlphaAmylase *float64   `json:"alpha_amylase,omitempty"`
+	Color        *ColorType `json:"color,omitempty"`
+	Name         *string    `json:"name,omitempty"`
+	// Diastatic power is a measurement of malted grains enzymatic content. A value of 35 Lintner is needed to self convert, while a value of 100 or more is desirable.
+	DiastaticPower *DiastaticPowerType       `json:"diastatic_power,omitempty"`
+	Moisture       *PercentType              `json:"moisture,omitempty"`
+	Origin         *string                   `json:"origin,omitempty"`
+	Inventory      *FermentableInventoryType `json:"inventory,omitempty"`
+	// The Kolbach Index, also known as soluble to total ratio of nitrogen or protein, is used to indcate the degree of malt modification. A value above 35% is desired for simple single infusion mashing, undermodified malt may require multiple step mashes or decoction.
+	KolbachIndex *float64 `json:"kolbach_index,omitempty"`
+	Notes        *string  `json:"notes,omitempty"`
 }
 
 // The potential yield of the fermentable ingredient, supporting SG, or percentage. eg 1.037 or 80% are valid yield types.
 type YieldType struct {
-	// The difference between fine and coarse grind, a difference more than 2 percent can indicate a protein or step mash may be desirable. eg 2%.
-	FineCoarseDifference *PercentType `json:"fine_coarse_difference,omitempty"`
-	// The potential yield of the fermentable ingredient for 1 lb of grain mashed in 1 gallon of water. eg 1.037
-	Potential *GravityType `json:"potential,omitempty"`
 	// Percentage yield compared to succrose of a fine grind. eg 80%
 	FineGrind *PercentType `json:"fine_grind,omitempty"`
 	// Percentage yield compared to succrose of a coarse grind. eg 78%
 	CoarseGrind *PercentType `json:"coarse_grind,omitempty"`
+	// The difference between fine and coarse grind, a difference more than 2 percent can indicate a protein or step mash may be desirable. eg 2%.
+	FineCoarseDifference *PercentType `json:"fine_coarse_difference,omitempty"`
+	// The potential yield of the fermentable ingredient for 1 lb of grain mashed in 1 gallon of water. eg 1.037
+	Potential *GravityType `json:"potential,omitempty"`
 }

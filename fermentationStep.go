@@ -5,16 +5,16 @@ package beerjson
 
 // FermentationStepType - a per step representation of a fermentation action.
 type FermentationStepType struct {
-	StartGravity     *GravityType     `json:"start_gravity,omitempty"`
-	EndGravity       *GravityType     `json:"end_gravity,omitempty"`
-	StartPh          *AcidityType     `json:"start_ph,omitempty"`
-	EndPh            *AcidityType     `json:"end_ph,omitempty"`
-	Description      *string          `json:"description,omitempty"`
-	StartTemperature *TemperatureType `json:"start_temperature,omitempty"`
-	// Free rise is used to indicate a fermentation step where the exothermic fermentation is allowed to raise the temperature without restriction This is either True or false.
-	FreeRise       *bool            `json:"free_rise,omitempty"`
-	Vessel         *string          `json:"vessel,omitempty"`
 	Name           string           `json:"name", validate:"required"`
 	EndTemperature *TemperatureType `json:"end_temperature,omitempty"`
 	StepTime       *TimeType        `json:"step_time,omitempty"`
+	// Free rise is used to indicate a fermentation step where the exothermic fermentation is allowed to raise the temperature without restriction This is either True or false.
+	FreeRise         *bool            `json:"free_rise,omitempty"`
+	StartGravity     *GravityType     `json:"start_gravity,omitempty"`
+	EndGravity       *GravityType     `json:"end_gravity,omitempty"`
+	StartPh          *AcidityType     `json:"start_ph,omitempty"`
+	Description      *string          `json:"description,omitempty"`
+	StartTemperature *TemperatureType `json:"start_temperature,omitempty"`
+	EndPh            *AcidityType     `json:"end_ph,omitempty"`
+	Vessel           *string          `json:"vessel,omitempty"`
 }
