@@ -1,0 +1,21 @@
+{
+  "beerjson": {
+    "version": 2.01,
+    "miscellaneous_ingredients": [
+      {
+        "name": "Irish Moss",
+        "type": "fining",
+        "timing": {
+          "use": {
+            "add_to_boil": {
+              "time": {
+                "unit": "min",
+                "value": 5
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

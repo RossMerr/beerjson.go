@@ -1,0 +1,25 @@
+{
+  "beerjson": {
+    "version": 2.01,
+    "fermentables": [
+      {
+        "name": "Fustons Hopped Amber",
+        "type": "extract",
+        "color": {
+          "unit": "Lovi",
+          "value": 13
+        },
+        "yield": {
+          "potential": {
+            "unit": "sg",
+            "value": 1.036
+          }
+        },
+        "bitterness": {
+          "ibu_per_lb_per_gal": 16.6
+        },
+        "notes": "Hopped amber extract suitable as a base for english ales."
+      }
+    ]
+  }
+}

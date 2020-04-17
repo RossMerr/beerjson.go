@@ -1,0 +1,85 @@
+package samples_test
+
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http/httptest"
+	"reflect"
+	"strings"
+	"testing"
+
+	"github.com/RossMerr/beerjson.go"
+	"github.com/RossMerr/beerjson.go/handlers"
+)
+
+func TestSchemas_Generate(t *testing.T) {
+
+	tests := []struct {
+		name    string
+		json    string
+		wantErr bool
+	}{
+		{
+			name: "Boil Whirlpool Chill",
+			json: "boil_whirlpool_chill.json",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			file, err := ioutil.ReadFile(tt.json)
+			if err != nil {
+				t.Error(err)
+			}
+
+			reader := strings.NewReader(string(file))
+
+			req := httptest.NewRequest("POST", "http://example.com", reader)
+			w := httptest.NewRecorder()
+			beer := &beerjson.Beerjson{}
+			handlers.BeerJSON(w, req, beer)
+
+			data, err := json.Marshal(&struct {
+				Beer *beerjson.Beerjson `json:"beerjson"`
+			}{
+				Beer: beer,
+			})
+			if err != nil {
+				t.Error(err)
+			}
+
+			err = ShouldEqualJSONObject(file, data)
+			if err != nil {
+				t.Error(err)
+			}
+		})
+	}
+}
+
+func ShouldEqualJSONObject(data1, data2 []byte) error {
+	x := make(map[string]interface{})
+	err := json.Unmarshal(data1, &x)
+	if err != nil {
+		return fmt.Errorf("unmarshal of data1 failed: %w", err)
+	}
+	y := make(map[string]interface{})
+	err = json.Unmarshal(data2, &y)
+	if err != nil {
+		return fmt.Errorf("unmarshal of data2 failed: %w", err)
+	}
+
+	if !reflect.DeepEqual(x, y) {
+		jx, err := json.Marshal(x)
+		if err != nil {
+			return fmt.Errorf("marshal of data1 failed: %w", err)
+		}
+
+		jy, err := json.Marshal(y)
+		if err != nil {
+			return fmt.Errorf("marshal of data2 failed: %w", err)
+		}
+		return fmt.Errorf("object not equal \n%v \n%v", string(jx), string(jy))
+	}
+
+	return nil
+}
