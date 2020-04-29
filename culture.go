@@ -2,23 +2,24 @@
 package beerjson
 
 import "encoding/json"
+import "fmt"
 
 // ID: https://raw.githubusercontent.com/beerjson/beerjson/master/json/culture.json
 
 // CultureAdditionType collects the attributes of each culture ingredient for use in a recipe.
 type CultureAdditionType struct {
+	Producer      *string `json:"producer,omitempty"`
+	TimesCultured *int32  `json:"times_cultured,omitempty"`
+	// The timing object fully describes the timing of an addition with options for basis on time, gravity, or pH at any process step.
+	Timing            *TimingType               `json:"timing,omitempty"`
+	Amount            CultureAdditionTypeAmount `json:"amount,omitempty", validate:"oneof"`
+	Name              *string                   `json:"name,omitempty"`
+	CultureBaseType   *CultureBaseType          `json:"type,omitempty"`
 	CultureBaseForm   *CultureBaseForm          `json:"form,omitempty"`
 	ProductId         *string                   `json:"product_id,omitempty"`
-	Name              *string                   `json:"name,omitempty"`
 	CellCountBillions *int32                    `json:"cell_count_billions,omitempty"`
-	Amount            CultureAdditionTypeAmount `json:"amount,omitempty", validate:"oneof"`
-	TimesCultured     *int32                    `json:"times_cultured,omitempty"`
-	Producer          *string                   `json:"producer,omitempty"`
-	CultureBaseType   *CultureBaseType          `json:"type,omitempty"`
 	// The expected, or measured apparent attenuation for a given culture in a given recipe. In comparison to attenuation range, this is a single value.
 	Attenuation *PercentType `json:"attenuation,omitempty"`
-	// The timing object fully describes the timing of an addition with options for basis on time, gravity, or pH at any process step.
-	Timing *TimingType `json:"timing,omitempty"`
 }
 
 func (s *CultureAdditionType) UnmarshalJSON(b []byte) error {
@@ -75,14 +76,38 @@ type CultureAdditionTypeAmount interface {
 
 // Provides unique properties to identify individual records of a culture.
 type CultureBase struct {
+	Name            string          `json:"name", validate:"required"`
+	CultureBaseType CultureBaseType `json:"type", validate:"required"`
 	CultureBaseForm CultureBaseForm `json:"form", validate:"required"`
 	Producer        *string         `json:"producer,omitempty"`
 	ProductId       *string         `json:"product_id,omitempty"`
-	Name            string          `json:"name", validate:"required"`
-	CultureBaseType CultureBaseType `json:"type", validate:"required"`
 }
 
 type CultureBaseForm string
+
+func (s *CultureBaseForm) UnmarshalJSON(b []byte) error {
+	var v string
+	err := json.Unmarshal(b, &v)
+	if err != nil {
+		return err
+	}
+
+	*s = CultureBaseForm(v)
+
+	switch *s {
+	case CultureBaseForm_Liquid:
+		return nil
+	case CultureBaseForm_Dry:
+		return nil
+	case CultureBaseForm_Slant:
+		return nil
+	case CultureBaseForm_Culture:
+		return nil
+	case CultureBaseForm_Dregs:
+		return nil
+	}
+	return fmt.Errorf("CultureBaseForm: value '%v' does not match any value", v)
+}
 
 const (
 	CultureBaseForm_Liquid  CultureBaseForm = "liquid"
@@ -93,6 +118,46 @@ const (
 )
 
 type CultureBaseType string
+
+func (s *CultureBaseType) UnmarshalJSON(b []byte) error {
+	var v string
+	err := json.Unmarshal(b, &v)
+	if err != nil {
+		return err
+	}
+
+	*s = CultureBaseType(v)
+
+	switch *s {
+	case CultureBaseType_Ale:
+		return nil
+	case CultureBaseType_Bacteria:
+		return nil
+	case CultureBaseType_Brett:
+		return nil
+	case CultureBaseType_Champagne:
+		return nil
+	case CultureBaseType_Kveik:
+		return nil
+	case CultureBaseType_Lacto:
+		return nil
+	case CultureBaseType_Lager:
+		return nil
+	case CultureBaseType_Malolactic:
+		return nil
+	case CultureBaseType_MixedCulture:
+		return nil
+	case CultureBaseType_Other:
+		return nil
+	case CultureBaseType_Pedio:
+		return nil
+	case CultureBaseType_Spontaneous:
+		return nil
+	case CultureBaseType_Wine:
+		return nil
+	}
+	return fmt.Errorf("CultureBaseType: value '%v' does not match any value", v)
+}
 
 const (
 	CultureBaseType_Ale          CultureBaseType = "ale"
@@ -112,43 +177,43 @@ const (
 
 // CultureInformation collects the attributes of a microbial culture.
 type CultureInformation struct {
+	Name            *string          `json:"name,omitempty"`
 	CultureBaseForm *CultureBaseForm `json:"form,omitempty"`
-	Producer        *string          `json:"producer,omitempty"`
+	// Recommended styles for a particular culture.
+	BestFor *string `json:"best_for,omitempty"`
+	// Floculation refers to the ability of yeast to aggregate to form large flocs which drop out of suspension.
+	Flocculation *QualitativeRangeType `json:"flocculation,omitempty"`
+	// Maximum number of times to reuse a culture before a new lab source is recommended.
+	MaxReuse        *int32           `json:"max_reuse,omitempty"`
+	ProductId       *string          `json:"product_id,omitempty"`
+	CultureBaseType *CultureBaseType `json:"type,omitempty"`
+	Notes           *string          `json:"notes,omitempty"`
 	// The recommended temperature range of fermentation by the culture producer.
 	TemperatureRange *TemperatureRangeType `json:"temperature_range,omitempty"`
-	Notes            *string               `json:"notes,omitempty"`
-	// Recommended styles for a particular culture.
-	BestFor   *string               `json:"best_for,omitempty"`
-	Inventory *CultureInventoryType `json:"inventory,omitempty"`
-	ProductId *string               `json:"product_id,omitempty"`
-	Name      *string               `json:"name,omitempty"`
+	Inventory        *CultureInventoryType `json:"inventory,omitempty"`
+	// A POF+ culture is capable of producing phenols, which is a common distinctive property of saison, and brett yeasts.
+	Pof *bool `json:"pof,omitempty"`
 	// The recommended limit of abv by the culture producer before attenuation stops.
 	AlcoholTolerance *PercentType `json:"alcohol_tolerance,omitempty"`
 	// A glucoamylase positive culture is capable of producing glucoamylase, the enzyme produced through expression of the diastatic gene, which allows yeast to attenuate dextrins and starches leading to a very low FG. This is positive in some saison/brett yeasts as well as the new gulo hybrid by Omega yeast labs.
-	Glucoamylase    *bool            `json:"glucoamylase,omitempty"`
-	CultureBaseType *CultureBaseType `json:"type,omitempty"`
-	// Floculation refers to the ability of yeast to aggregate to form large flocs which drop out of suspension.
-	Flocculation     *QualitativeRangeType `json:"flocculation,omitempty"`
-	AttenuationRange *PercentRangeType     `json:"attenuation_range,omitempty"`
-	// Maximum number of times to reuse a culture before a new lab source is recommended.
-	MaxReuse *int32 `json:"max_reuse,omitempty"`
-	// A POF+ culture is capable of producing phenols, which is a common distinctive property of saison, and brett yeasts.
-	Pof      *bool     `json:"pof,omitempty"`
-	Zymocide *Zymocide `json:"zymocide,omitempty"`
+	Glucoamylase     *bool             `json:"glucoamylase,omitempty"`
+	Producer         *string           `json:"producer,omitempty"`
+	AttenuationRange *PercentRangeType `json:"attenuation_range,omitempty"`
+	Zymocide         *Zymocide         `json:"zymocide,omitempty"`
 }
 
 type CultureInventoryType struct {
-	Liquid  *VolumeType `json:"liquid,omitempty"`
-	Dry     *MassType   `json:"dry,omitempty"`
 	Slant   *VolumeType `json:"slant,omitempty"`
 	Culture *VolumeType `json:"culture,omitempty"`
+	Liquid  *VolumeType `json:"liquid,omitempty"`
+	Dry     *MassType   `json:"dry,omitempty"`
 }
 
 // Zymocide, also known as killer yeast properties, is common among wine yeast. There are also some ale and brett yeasts that are immune to some zymocidic properties, these are known as killer neutral.
 type Zymocide struct {
-	No1     *bool `json:"1,omitempty"`
-	No2     *bool `json:"2,omitempty"`
 	No28    *bool `json:"28,omitempty"`
 	Klus    *bool `json:"klus,omitempty"`
 	Neutral *bool `json:"neutral,omitempty"`
+	No1     *bool `json:"1,omitempty"`
+	No2     *bool `json:"2,omitempty"`
 }

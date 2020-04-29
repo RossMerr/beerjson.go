@@ -2,18 +2,19 @@
 package beerjson
 
 import "encoding/json"
+import "fmt"
 
 // ID: https://raw.githubusercontent.com/beerjson/beerjson/master/json/misc.json
 
 // MiscellaneousAdditionType collects the attributes of each miscellaneous ingredient for use in a recipe.
 type MiscellaneousAdditionType struct {
-	Name     *string `json:"name,omitempty"`
-	Producer *string `json:"producer,omitempty"`
+	MiscellaneousBaseType *MiscellaneousBaseType `json:"type,omitempty"`
 	// The timing object fully describes the timing of an addition with options for basis on time, gravity, or pH at any process step.
-	Timing                *TimingType                     `json:"timing,omitempty"`
-	Amount                MiscellaneousAdditionTypeAmount `json:"amount,omitempty", validate:"oneof"`
-	ProductId             *string                         `json:"product_id,omitempty"`
-	MiscellaneousBaseType *MiscellaneousBaseType          `json:"type,omitempty"`
+	Timing    *TimingType                     `json:"timing,omitempty"`
+	Amount    MiscellaneousAdditionTypeAmount `json:"amount,omitempty", validate:"oneof"`
+	Name      *string                         `json:"name,omitempty"`
+	Producer  *string                         `json:"producer,omitempty"`
+	ProductId *string                         `json:"product_id,omitempty"`
 }
 
 func (s *MiscellaneousAdditionType) UnmarshalJSON(b []byte) error {
@@ -77,6 +78,34 @@ type MiscellaneousBase struct {
 }
 
 type MiscellaneousBaseType string
+
+func (s *MiscellaneousBaseType) UnmarshalJSON(b []byte) error {
+	var v string
+	err := json.Unmarshal(b, &v)
+	if err != nil {
+		return err
+	}
+
+	*s = MiscellaneousBaseType(v)
+
+	switch *s {
+	case MiscellaneousBaseType_Spice:
+		return nil
+	case MiscellaneousBaseType_Fining:
+		return nil
+	case MiscellaneousBaseType_WaterAgent:
+		return nil
+	case MiscellaneousBaseType_Herb:
+		return nil
+	case MiscellaneousBaseType_Flavor:
+		return nil
+	case MiscellaneousBaseType_Wood:
+		return nil
+	case MiscellaneousBaseType_Other:
+		return nil
+	}
+	return fmt.Errorf("MiscellaneousBaseType: value '%v' does not match any value", v)
+}
 
 const (
 	MiscellaneousBaseType_Spice      MiscellaneousBaseType = "spice"
@@ -146,12 +175,12 @@ type MiscellaneousInventoryTypeAmount interface {
 
 // MiscellaneousType collects the attributes of an ingredient to store as record information.
 type MiscellaneousType struct {
-	// Used to describe the purpose of the miscellaneous ingredient, e.g. whirlfloc is used for clarity.
-	UseFor                *string                     `json:"use_for,omitempty"`
-	Notes                 *string                     `json:"notes,omitempty"`
+	Inventory             *MiscellaneousInventoryType `json:"inventory,omitempty"`
 	Name                  *string                     `json:"name,omitempty"`
 	Producer              *string                     `json:"producer,omitempty"`
 	ProductId             *string                     `json:"product_id,omitempty"`
 	MiscellaneousBaseType *MiscellaneousBaseType      `json:"type,omitempty"`
-	Inventory             *MiscellaneousInventoryType `json:"inventory,omitempty"`
+	// Used to describe the purpose of the miscellaneous ingredient, e.g. whirlfloc is used for clarity.
+	UseFor *string `json:"use_for,omitempty"`
+	Notes  *string `json:"notes,omitempty"`
 }
