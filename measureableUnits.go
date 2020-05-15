@@ -547,7 +547,7 @@ const (
 
 type TimeType struct {
 	Unit  TimeUnitType `json:"unit", validate:"required"`
-	Value float64      `json:"value", validate:"required"`
+	Value int64        `json:"value", validate:"required"`
 }
 
 type TimeUnitType string
@@ -572,22 +572,16 @@ func (s *TimeUnitType) UnmarshalJSON(b []byte) error {
 		return nil
 	case TimeUnitType_Week:
 		return nil
-	case TimeUnitType_Month:
-		return nil
-	case TimeUnitType_Year:
-		return nil
 	}
 	return fmt.Errorf("TimeUnitType: value '%v' does not match any value", v)
 }
 
 const (
-	TimeUnitType_Sec   TimeUnitType = "sec"
-	TimeUnitType_Min   TimeUnitType = "min"
-	TimeUnitType_Hr    TimeUnitType = "hr"
-	TimeUnitType_Day   TimeUnitType = "day"
-	TimeUnitType_Week  TimeUnitType = "week"
-	TimeUnitType_Month TimeUnitType = "month"
-	TimeUnitType_Year  TimeUnitType = "year"
+	TimeUnitType_Sec  TimeUnitType = "sec"
+	TimeUnitType_Min  TimeUnitType = "min"
+	TimeUnitType_Hr   TimeUnitType = "hr"
+	TimeUnitType_Day  TimeUnitType = "day"
+	TimeUnitType_Week TimeUnitType = "week"
 )
 
 // UnitType is used where unitless amounts are required, such as 1 apple, or 1 yeast packet.
