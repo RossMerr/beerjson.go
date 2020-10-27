@@ -239,6 +239,29 @@ type FermentableType struct {
 	AlphaAmylase *float64                  `json:"alpha_amylase,omitempty"`
 	Inventory    *FermentableInventoryType `json:"inventory,omitempty"`
 	Notes        *string                   `json:"notes,omitempty"`
+	// Used to indicate the ‘crystallized’ percentage of starches for crystal malts.
+	Glassy *PercentType `json:"glassy,omitempty"`
+	// The percentage of grain that masses through sieves with gaps of 7/64 and 6/64, desired values of 80% or higher which indicate plump kernels.
+	Plump *PercentType `json:"plump,omitempty"`
+	Half  *PercentType `json:"half,omitempty"`
+	// The opposite of glassy, a mealy kernel is one that is not glassy. Base malt should be at least 90%, single step mashes generally require 95% or higher.
+	Mealy *PercentType `json:"mealy,omitempty"`
+	// The Percentage of grain that makes it through a thin mesh screen, typically 5/64 inch. Values less than 3% are desired.
+	Thru *PercentType `json:"thru,omitempty"`
+	// Friability is the measure of a malts ability to crumble during the crush, and is used as an indicator for easy gelatinization of the grain and starches, as well as modification of the malt. Value of 85% of higher indicates a well modified malt and is suitable for single step mashes. Lower values may require a step mash.
+	Friability *PercentType `json:"friability,omitempty"`
+	// The pH of the resultant wort for 1 lb of grain mashed in 1 gallon of distilled water. Used in many water chemistry / mash pH prediction software.
+	DipH *AcidityType `json:"di_ph,omitempty"`
+	// The measure of wort viscosity, typically associated with the breakdown of beta-glucans. The higher the viscosity, the greater the need for a glucan rest and the less suitable for a fly sparge.
+	Viscosity *ViscosityType `json:"viscosity,omitempty"`
+	// The amount of DMS precursors, namely S-methyl methionine (SMM) and dimethyl sulfoxide (DMSO) in the malt which convert to dimethyl sulfide (DMS).
+	DMSP *ConcentrationType `json:"dms_p,omitempty"`
+	// Free Amino Nitrogen (FAN) is a critical yeast nutrient. Typical values for base malt is 170.
+	FAN *ConcentrationType `json:"fan,omitempty"`
+	// Fermentability - Used in Extracts to indicate a baseline typical apparent attenuation for a typical medium attenuation yeast.
+	Fermentability *PercentType `json:"fermentability,omitempty"`
+	// Values of 180 or more may suggest a glucan rest and avoiding fly sparging.
+	BetaGlucan *ConcentrationType `json:"beta_glucan,omitempty"`
 }
 
 // The potential yield of the fermentable ingredient, supporting SG, or percentage. eg 1.037 or 80% are valid yield types.

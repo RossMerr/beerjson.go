@@ -713,3 +713,38 @@ const (
 	VolumeUnitType_Igal  VolumeUnitType = "igal"
 	VolumeUnitType_Ibbl  VolumeUnitType = "ibbl"
 )
+
+
+
+type ViscosityType struct {
+	Value float64  `json:"value", validate:"required"`
+	Unit  ViscosityUnitType `json:"unit", validate:"required"`
+
+}
+
+type ViscosityUnitType string
+
+
+func (s *ViscosityUnitType) UnmarshalJSON(b []byte) error {
+	var v string
+	err := json.Unmarshal(b, &v)
+	if err != nil {
+		return err
+	}
+
+	*s = ViscosityUnitType(v)
+
+	switch *s {
+	case ViscosityUnitType_CP:
+		return nil
+	case ViscosityUnitType_MPAS:
+		return nil
+	}
+	return fmt.Errorf("ViscosityUnitType: value '%v' does not match any value", v)
+}
+
+const (
+	ViscosityUnitType_CP ViscosityUnitType = "cP"
+	ViscosityUnitType_MPAS ViscosityUnitType = "mPa-s"
+
+)
