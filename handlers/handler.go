@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/RossMerr/beerjson.go"
+	"github.com/beerproto/beerjson.go"
 )
 
 func BeerJSON(w http.ResponseWriter, r *http.Request, beer *beerjson.Beerjson) {
