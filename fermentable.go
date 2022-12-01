@@ -228,7 +228,7 @@ type FermentableType struct {
 	MaxInBatch *PercentType `json:"max_in_batch,omitempty"`
 	Color      *ColorType   `json:"color,omitempty"`
 	// The Kolbach Index, also known as soluble to total ratio of nitrogen or protein, is used to indcate the degree of malt modification. A value above 35% is desired for simple single infusion mashing, undermodified malt may require multiple step mashes or decoction.
-	KolbachIndex *float64 `json:"kolbach_index,omitempty"`
+	KolbachIndex *PercentType `json:"kolbach_index,omitempty"`
 	// Diastatic power is a measurement of malted grains enzymatic content. A value of 35 Lintner is needed to self convert, while a value of 100 or more is desirable.
 	DiastaticPower            *DiastaticPowerType        `json:"diastatic_power,omitempty"`
 	FermentableBaseType       *FermentableBaseType       `json:"type,omitempty"`
